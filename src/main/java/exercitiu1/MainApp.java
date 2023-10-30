@@ -102,7 +102,7 @@ public class MainApp {
         System.out.println("4. Afisarea angajatilor care nu au functie de conducere");
         printNormalEmployees();
         System.out.println("5. Extragerea din lista de angajati a unei liste de String-uri care contine numele angajatilor scrise cu majuscule");
-        getEmployeesNames();
+        getEmployeesNames().forEach(System.out::println);
         System.out.println("6. Afisarea salariilor mai mici de 3000 de RON");
         printWagesSmallerThan3000();
         System.out.println();
