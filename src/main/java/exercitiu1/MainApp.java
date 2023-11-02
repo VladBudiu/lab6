@@ -91,7 +91,7 @@ public class MainApp {
                         || angajat.getDataAngajarii().getMonthValue() == 9).count();
     }
 
-    public static void printEmployeesFromLastSummer2() {
+    public static void printNumberOfEmployeesFromLastSummer() {
         System.out.println("Numarul de angjati de vara trecuta: "+ angajatiList.stream().filter(angajat -> (LocalDate.now().getYear() - angajat.getDataAngajarii().getYear()) == 1)
                 .filter(angajat -> angajat.getDataAngajarii().getMonthValue() == 7 || angajat.getDataAngajarii().getMonthValue() == 8
                         || angajat.getDataAngajarii().getMonthValue() == 9).count()+"\nNominal:\n");
@@ -134,9 +134,7 @@ public class MainApp {
         printIfIonInList();
         System.out.println();
         System.out.println("10. Afisarea numarului de persoane care s-au angajat in vara anului precedent");
-//        //printEmployeesFromLastSummer();
-//        System.out.println(printEmployeesFromLastSummer());
-        printEmployeesFromLastSummer2();
+        printNumberOfEmployeesFromLastSummer();
     }
 
     public static List<Angajat> angajatiList = new ArrayList<>();
