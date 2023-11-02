@@ -100,17 +100,17 @@ public class MainApp {
                         || angajat.getDataAngajarii().getMonthValue() == 9).forEach(System.out::println);
     }
     public static void main(String[] args) throws IOException {
-       angajatiList.add(new Angajat("Andrei", "Director", LocalDate.of(2022, Month.APRIL,2),9400));
-        angajatiList.add(new Angajat("David", "Manager", LocalDate.of(2019, Month.JANUARY,1),7500));
-        angajatiList.add(new Angajat("Ion", "Muncitor", LocalDate.of(2021, Month.FEBRUARY,16),2900));
-        angajatiList.add(new Angajat("Sergiu", "Muncitor", LocalDate.of(2022, Month.JULY,4),1800));
-        angajatiList.add(new Angajat("Vasilica", "Sef", LocalDate.of(2022, Month.APRIL,7),10780));
-
-        File file = new File("src/main/resources/angajati.json");
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        mapper.writeValue(file,angajatiList);
+//       angajatiList.add(new Angajat("Andrei", "Director", LocalDate.of(2022, Month.APRIL,2),9400));
+//        angajatiList.add(new Angajat("David", "Manager", LocalDate.of(2019, Month.JANUARY,1),7500));
+//        angajatiList.add(new Angajat("Ion", "Muncitor", LocalDate.of(2021, Month.FEBRUARY,16),2900));
+//        angajatiList.add(new Angajat("Sergiu", "Muncitor", LocalDate.of(2022, Month.JULY,4),1800));
+//        angajatiList.add(new Angajat("Vasilica", "Sef", LocalDate.of(2022, Month.APRIL,7),10780));
+//
+//        File file = new File("src/main/resources/angajati.json");
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.registerModule(new JavaTimeModule());
+//        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+//        mapper.writeValue(file,angajatiList);
         angajatiList = readFile();
         System.out.println("1. Afisarea listei de angajati folosind referinte la metode");
         printEmployees();
