@@ -47,7 +47,10 @@ public class MainApp {
     }
 
     public static void printEmployeesWithWageGreaterThan2500() {
-        angajatiList.stream().filter((angajat -> angajat.getSalariu() > 2500f)).forEach(System.out::println);
+        angajatiList
+                .stream()
+                .filter((angajat -> angajat.getSalariu() > 2500f))
+                .forEach(System.out::println);
     }
 
     public static List<Angajat> printDirectorsEmployedLastYear() {
@@ -68,12 +71,24 @@ public class MainApp {
     }
 
     public static void printWagesSmallerThan3000() {
-        angajatiList.stream().filter((angajat -> angajat.getSalariu() < 3000f)).forEach(angajat -> System.out.println(angajat.getSalariu()));
+        //angajatiList.stream().filter((angajat -> angajat.getSalariu() < 3000f)).forEach(angajat -> System.out.println(angajat.getSalariu()));
+        angajatiList.stream()
+                .filter((angajat -> angajat.getSalariu() < 3000f))
+                .map(a->a.getSalariu())
+                .forEach(s -> System.out.println(s));
     }
 
     public static void printFirstEmployeeEver() {
-        Optional<Angajat> angajat = angajatiList.stream().min(Comparator.comparing(Angajat::getDataAngajarii));
-        System.out.println(angajat.isPresent() ? angajat.get().toString() : "Nu exista angajati!");
+//        Optional<Angajat> angajat = angajatiList.stream().min(Comparator.comparing(Angajat::getDataAngajarii)).ifPresentOrElse(angajat1 -> angajat1.get().toString());//ifpresesntorelse
+//        System.out.println(angajat.isPresent() ? angajat.get().toString() : "Nu exista angajati!");
+        angajatiList.stream()
+                .min((Comparator.comparing(Angajat::getDataAngajarii)))
+                .ifPresentOrElse(
+                        angajat -> System.out.println(angajat.toString()),
+                        () -> System.out.println(" idk")
+                );
+
+
     }
 
     public static void printStatisticsAboutWages() {
@@ -81,14 +96,21 @@ public class MainApp {
     }
 
     public static void printIfIonInList() {
-        Optional optional = angajatiList.stream().filter((angajat -> angajat.getNume().contains("Ion"))).findAny();
-        System.out.println(optional.isPresent() ? "Exista Ion" : "Nu exista Ion");
+            angajatiList.stream()
+            .filter(angajat -> angajat.getNume().contains("Ion"))
+            .findAny()
+            .ifPresentOrElse(
+                    angajat -> System.out.println("Exista Ion"),
+                    () -> System.out.println("Nu exista Ion")
+            );
     }
 
     public static long printEmployeesFromLastSummer() {
-       return angajatiList.stream().filter(angajat -> (LocalDate.now().getYear() - angajat.getDataAngajarii().getYear()) == 1)
-                .filter(angajat -> angajat.getDataAngajarii().getMonthValue() == 7 || angajat.getDataAngajarii().getMonthValue() == 8
-                        || angajat.getDataAngajarii().getMonthValue() == 9).count();
+        LocalDate ultimaZi_De_Primavara = LocalDate.of(2022,6,1);
+        LocalDate primaZi_De_Toamna = LocalDate.of(2022,9,1);
+        return angajatiList.stream()
+                .filter(angajat -> angajat.getDataAngajarii().isAfter(ultimaZi_De_Primavara)&&angajat.getDataAngajarii().isBefore(primaZi_De_Toamna)).count();
+
     }
 
     public static void printNumberOfEmployeesFromLastSummer() {
@@ -99,18 +121,14 @@ public class MainApp {
                 .filter(angajat -> angajat.getDataAngajarii().getMonthValue() == 7 || angajat.getDataAngajarii().getMonthValue() == 8
                         || angajat.getDataAngajarii().getMonthValue() == 9).forEach(System.out::println);
     }
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 //       angajatiList.add(new Angajat("Andrei", "Director", LocalDate.of(2022, Month.APRIL,2),9400));
-//        angajatiList.add(new Angajat("David", "Manager", LocalDate.of(2019, Month.JANUARY,1),7500));
-//        angajatiList.add(new Angajat("Ion", "Muncitor", LocalDate.of(2021, Month.FEBRUARY,16),2900));
-//        angajatiList.add(new Angajat("Sergiu", "Muncitor", LocalDate.of(2022, Month.JULY,4),1800));
-//        angajatiList.add(new Angajat("Vasilica", "Sef", LocalDate.of(2022, Month.APRIL,7),10780));
+//       angajatiList.add(new Angajat("David", "Manager", LocalDate.of(2019, Month.JANUARY,1),7500));
+//       angajatiList.add(new Angajat("Ion", "Muncitor", LocalDate.of(2021, Month.FEBRUARY,16),2900));
+//       angajatiList.add(new Angajat("Sergiu", "Muncitor", LocalDate.of(2022, Month.JULY,4),1800));
+//       angajatiList.add(new Angajat("Vasilica", "Sef", LocalDate.of(2022, Month.APRIL,7),10780));
 //
-//        File file = new File("src/main/resources/angajati.json");
-//        ObjectMapper mapper = new ObjectMapper();
-//        mapper.registerModule(new JavaTimeModule());
-//        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-//        mapper.writeValue(file,angajatiList);
+//      writeFile(angajatiList);
         angajatiList = readFile();
         System.out.println("1. Afisarea listei de angajati folosind referinte la metode");
         printEmployees();
@@ -134,7 +152,8 @@ public class MainApp {
         printIfIonInList();
         System.out.println();
         System.out.println("10. Afisarea numarului de persoane care s-au angajat in vara anului precedent");
-        printNumberOfEmployeesFromLastSummer();
+       // printNumberOfEmployeesFromLastSummer();
+        System.out.println(printEmployeesFromLastSummer());
     }
 
     public static List<Angajat> angajatiList = new ArrayList<>();
