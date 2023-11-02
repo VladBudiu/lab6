@@ -1,5 +1,1 @@
-[
-  {"name":"Vlad","dateOfEmployment":"2022-04-01","job":"Director","wage":7000.0},
-  {"name":"Andrei","dateOfEmployment":"2023-04-02","job":"DevOps","wage":5000.0},
-  {"name":"Raul","dateOfEmployment":"2022-07-02","job":"Tester","wage":2000.0}
-]
+[{"nume":"Andrei","post":"Director","salariu":9400.0,"dataAngajarii":"2022-04-02"},{"nume":"David","post":"Manager","salariu":7500.0,"dataAngajarii":"2019-01-01"},{"nume":"Ion","post":"Muncitor","salariu":2900.0,"dataAngajarii":"2021-02-16"},{"nume":"Sergiu","post":"Muncitor","salariu":1800.0,"dataAngajarii":"2022-07-04"},{"nume":"Vasilica","post":"Sef","salariu":10780.0,"dataAngajarii":"2022-04-07"}]

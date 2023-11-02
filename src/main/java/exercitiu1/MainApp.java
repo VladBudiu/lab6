@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MainApp {
-    public static void writeFile(List<Employee> list) {
+    public static void writeFile(List<Angajat> list) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());
@@ -27,13 +28,13 @@ public class MainApp {
         }
     }
 
-    public static List<Employee> readFile() {
+    public static List<Angajat> readFile() {
         try {
             File file = new File("src/main/resources/angajati.json");
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());
             mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-            return mapper.readValue(file, new TypeReference<List<Employee>>() {
+            return mapper.readValue(file, new TypeReference<List<Angajat>>() {
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -42,56 +43,75 @@ public class MainApp {
     }
 
     public static void printEmployees() {
-        employeeList.forEach(System.out::println);
+        angajatiList.forEach(System.out::println);
     }
 
     public static void printEmployeesWithWageGreaterThan2500() {
-        employeeList.stream().filter((employee -> employee.getWage() > 2500f)).forEach(System.out::println);
+        angajatiList.stream().filter((angajat -> angajat.getSalariu() > 2500f)).forEach(System.out::println);
     }
 
-    public static List<Employee> printDirectorsEmployedLastYear() {
-        List<Employee> employees = employeeList.stream().filter(employee -> (LocalDate.now().getYear() - employee.getDateOfEmployment().getYear()) == 1)
-                .filter(employee -> employee.getDateOfEmployment().getMonthValue() == 4)
-                .filter(employee -> employee.getJob().contains("Director")).toList();
-        return employees;
+    public static List<Angajat> printDirectorsEmployedLastYear() {
+        List<Angajat> angajati = angajatiList.stream().filter(angajat -> (LocalDate.now().getYear() - angajat.getDataAngajarii().getYear()) == 1)
+                .filter(angajat -> angajat.getDataAngajarii().getMonthValue() == 4)
+                .filter(angajat -> angajat.getPost().contains("Director")|| angajat.getPost().contains("Sef")).toList();
+        return angajati;
     }
 
     public static void printNormalEmployees() {
-        employeeList.stream().filter(employee -> !employee.getJob().contains("Director"))
-                .sorted(Comparator.comparing(Employee::getWage).reversed())
+        angajatiList.stream().filter(angajat -> !angajat.getPost().contains("Director"))
+                .sorted(Comparator.comparing(Angajat::getSalariu).reversed())
                 .forEach(System.out::println);
     }
 
     public static List<String> getEmployeesNames() {
-        return employeeList.stream().map(employee -> employee.getName().toUpperCase()).collect(Collectors.toList());
+        return angajatiList.stream().map(angajat -> angajat.getNume().toUpperCase()).collect(Collectors.toList());
     }
 
     public static void printWagesSmallerThan3000() {
-        employeeList.stream().filter((employee -> employee.getWage() < 3000f)).forEach(employee -> System.out.println(employee.getWage()));
+        angajatiList.stream().filter((angajat -> angajat.getSalariu() < 3000f)).forEach(angajat -> System.out.println(angajat.getSalariu()));
     }
 
     public static void printFirstEmployeeEver() {
-        Optional<Employee> employee = employeeList.stream().min(Comparator.comparing(Employee::getDateOfEmployment));
-        System.out.println(employee.isPresent() ? employee.get().toString() : "Nu exista angajati!");
+        Optional<Angajat> angajat = angajatiList.stream().min(Comparator.comparing(Angajat::getDataAngajarii));
+        System.out.println(angajat.isPresent() ? angajat.get().toString() : "Nu exista angajati!");
     }
 
     public static void printStatisticsAboutWages() {
-        System.out.println(employeeList.stream().collect(Collectors.summarizingDouble(Employee::getWage)));
+        System.out.println(angajatiList.stream().collect(Collectors.summarizingDouble(Angajat::getSalariu)));
     }
 
     public static void printIfIonInList() {
-        Optional optional = employeeList.stream().filter((employee -> employee.getName().contains("Ion"))).findAny();
-        System.out.println(optional.isPresent() ? "Exista Ion" : "Nu exista Ion bruh :(");
+        Optional optional = angajatiList.stream().filter((angajat -> angajat.getNume().contains("Ion"))).findAny();
+        System.out.println(optional.isPresent() ? "Exista Ion" : "Nu exista Ion");
     }
 
-    public static void printEmployeesFromLastSummer() {
-        employeeList.stream().filter(employee -> (LocalDate.now().getYear() - employee.getDateOfEmployment().getYear()) == 1)
-                .filter(employee -> employee.getDateOfEmployment().getMonthValue() == 7 || employee.getDateOfEmployment().getMonthValue() == 8
-                        || employee.getDateOfEmployment().getMonthValue() == 9).forEach(System.out::println);
+    public static long printEmployeesFromLastSummer() {
+       return angajatiList.stream().filter(angajat -> (LocalDate.now().getYear() - angajat.getDataAngajarii().getYear()) == 1)
+                .filter(angajat -> angajat.getDataAngajarii().getMonthValue() == 7 || angajat.getDataAngajarii().getMonthValue() == 8
+                        || angajat.getDataAngajarii().getMonthValue() == 9).count();
     }
 
-    public static void main(String[] args) {
-        employeeList = readFile();
+    public static void printEmployeesFromLastSummer2() {
+        System.out.println("Numarul de angjati de vara trecuta: "+ angajatiList.stream().filter(angajat -> (LocalDate.now().getYear() - angajat.getDataAngajarii().getYear()) == 1)
+                .filter(angajat -> angajat.getDataAngajarii().getMonthValue() == 7 || angajat.getDataAngajarii().getMonthValue() == 8
+                        || angajat.getDataAngajarii().getMonthValue() == 9).count()+"\nNominal:\n");
+        angajatiList.stream().filter(angajat -> (LocalDate.now().getYear() - angajat.getDataAngajarii().getYear()) == 1)
+                .filter(angajat -> angajat.getDataAngajarii().getMonthValue() == 7 || angajat.getDataAngajarii().getMonthValue() == 8
+                        || angajat.getDataAngajarii().getMonthValue() == 9).forEach(System.out::println);
+    }
+    public static void main(String[] args) throws IOException {
+       angajatiList.add(new Angajat("Andrei", "Director", LocalDate.of(2022, Month.APRIL,2),9400));
+        angajatiList.add(new Angajat("David", "Manager", LocalDate.of(2019, Month.JANUARY,1),7500));
+        angajatiList.add(new Angajat("Ion", "Muncitor", LocalDate.of(2021, Month.FEBRUARY,16),2900));
+        angajatiList.add(new Angajat("Sergiu", "Muncitor", LocalDate.of(2022, Month.JULY,4),1800));
+        angajatiList.add(new Angajat("Vasilica", "Sef", LocalDate.of(2022, Month.APRIL,7),10780));
+
+        File file = new File("src/main/resources/angajati.json");
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper.writeValue(file,angajatiList);
+        angajatiList = readFile();
         System.out.println("1. Afisarea listei de angajati folosind referinte la metode");
         printEmployees();
         System.out.println("2. Afișarea angajaților care au salariul peste 2500 RON");
@@ -114,8 +134,10 @@ public class MainApp {
         printIfIonInList();
         System.out.println();
         System.out.println("10. Afisarea numarului de persoane care s-au angajat in vara anului precedent");
-        printEmployeesFromLastSummer();
+//        //printEmployeesFromLastSummer();
+//        System.out.println(printEmployeesFromLastSummer());
+        printEmployeesFromLastSummer2();
     }
 
-    public static List<Employee> employeeList = new ArrayList<>();
+    public static List<Angajat> angajatiList = new ArrayList<>();
 }
